@@ -1,17 +1,14 @@
-import { OpenAI } from '@openai/gpt-3';
+import OpenAI from 'openai';
 
-const openai = new OpenAI(process.env.OPENAI_API_KEY);
+const openai = new OpenAI({
+ apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
+});
 
-async function convertTextToSpeech(prompt) {
- const response = await openai.complete({
-    engine: 'text-davinci-002',
-    prompt: prompt,
-    max_tokens: 60,
-    n: 1,
-    loglevel: 'info',
-    logprobs: 10,
-    temperature: 0.5,
+async function main() {
+ const chatCompletion = await openai.chat.completions.create({
+    messages: [{ role: 'user', content: 'Say this is a test' }],
+    model: 'gpt-3.5-turbo',
  });
-
- return response.choices[0].text;
 }
+
+main();
